@@ -1,7 +1,7 @@
 {
 	"name": "@ipg24/b24jssdk-main",
 	"version": "0.1.6",
-	"author": "Bitrix",
+	"author": "Kirill Antropov",
 	"license": "MIT",
 	"private": true,
 	"description": "Bitrix24 REST API JS SDK",
@@ -12,10 +12,10 @@
 		"REST",
 		"API"
 	],
-	"homepage": "https://bitrix24.github.io/b24jssdk/",
+	"homepage": "https://github.com/MSITETOP/b24jssdk/",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/bitrix24/b24jssdk.git"
+		"url": "git+https://github.com/MSITETOP/b24jssdk.git"
 	},
 	"sideEffects": false,
 	"type": "module",
@@ -25,7 +25,7 @@
 	],
 	"scripts": {
 		"build": "npm-run-all -s build:*",
-		"build:jssdk-unbuild": "npm run --workspace=@ipg24/b24jssdk build",
+		"build:jssdk-unbuild": "npm run --workspace=@MSITETOP/b24jssdk build",
 		"docs:dev": "vitepress dev docs",
 		"docs:build": "vitepress build docs",
 		"docs:preview": "vitepress preview docs"
