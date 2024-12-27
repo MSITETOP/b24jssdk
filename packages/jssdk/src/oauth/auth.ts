@@ -70,12 +70,11 @@ export class AuthOAuthManager implements AuthActions {
       }
 
       const data = await response.json()
-      
-      // Удаляем ненужные поля из ответа
-      delete data.client_id
-      delete data.client_secret
-      delete data.error
-      
+
+      if (data.error) {
+        throw new Error(`Ошибка обновления токена: ${data.error}`)
+      }
+
       // Обновляем данные авторизации
       this.#authData = {
         access_token: data.access_token,
