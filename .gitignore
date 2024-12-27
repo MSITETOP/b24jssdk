@@ -30,6 +30,7 @@ yarn-error.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/*.code-snippets
+.env
 *.iml
 .idea
 .DS_Store
