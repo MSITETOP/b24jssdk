@@ -1,5 +1,9 @@
 import { B24OAuth } from '@ipg24/b24jssdk'
 import { LoggerBrowser } from '@ipg24/b24jssdk'
+import * as dotenv from 'dotenv'
+
+// Загружаем переменные окружения
+dotenv.config()
 
 // Пример использования OAuth авторизации
 async function oauthExample() {
@@ -9,7 +13,9 @@ async function oauthExample() {
     clientId: process.env.B24_CLIENT_ID || 'your_client_id', 
     accessToken: process.env.B24_ACCESS_TOKEN || 'your_access_token',
     refreshToken: process.env.B24_REFRESH_TOKEN || 'your_refresh_token',
-    expiresIn: Number(process.env.B24_EXPIRES_IN || 3600)
+    memberId: process.env.B24_MEMBER_ID || 'your_member_id',
+    expiresIn: Number(process.env.B24_EXPIRES_IN || 3600),
+    clientSecret: process.env.B24_CLIENT_SECRET || 'your_client_secret'
   }
 
   try {

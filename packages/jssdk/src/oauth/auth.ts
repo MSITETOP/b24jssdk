@@ -3,9 +3,11 @@ import type { AuthActions, AuthData } from '../types/auth'
 export interface B24OAuthParams {
   b24Url: string
   clientId: string
+  clientSecret: string
   accessToken: string
   refreshToken: string
   expiresIn: number
+  memberId: string 
 }
 
 /**
@@ -31,7 +33,7 @@ export class AuthOAuthManager implements AuthActions {
       refresh_token: this.#b24OAuthParams.refreshToken,
       expires_in: this.#b24OAuthParams.expiresIn,
       domain: domain,
-      member_id: domain,
+      member_id: this.#b24OAuthParams.memberId,
     }
   }
 
@@ -44,18 +46,23 @@ export class AuthOAuthManager implements AuthActions {
       throw new Error('AuthData не инициализирован')
     }
 
-    const params = new URLSearchParams({
-      'grant_type': 'refresh_token',
-      'client_id': this.#b24OAuthParams.clientId,
-      'refresh_token': this.#authData.refresh_token,
-    })
+    const params = {
+      this_auth: 'Y',
+      params: {
+        client_id: this.#b24OAuthParams.clientId,
+        grant_type: 'refresh_token',
+        client_secret: this.#b24OAuthParams.clientSecret,
+        refresh_token: this.#authData.refresh_token,
+      }
+    }
 
     try {
-      const response = await fetch(`${this.#b24OAuthParams.b24Url}/oauth/token/?${params}`, {
+      const response = await fetch('https://oauth.bitrix.info/oauth/token/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify(params)
       })
 
       if (!response.ok) {
@@ -63,6 +70,11 @@ export class AuthOAuthManager implements AuthActions {
       }
 
       const data = await response.json()
+      
+      // Удаляем ненужные поля из ответа
+      delete data.client_id
+      delete data.client_secret
+      delete data.error
       
       // Обновляем данные авторизации
       this.#authData = {
