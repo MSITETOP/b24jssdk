@@ -1,5 +1,5 @@
-import { B24OAuth } from '../packages/jssdk/src/oauth'
-import { LoggerBrowser } from '../packages/jssdk/src/logger/browser'
+import { B24OAuth } from '@ipg24/b24jssdk'
+import { LoggerBrowser } from '@ipg24/b24jssdk'
 
 // Пример использования OAuth авторизации
 async function oauthExample() {
