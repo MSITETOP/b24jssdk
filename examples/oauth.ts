@@ -5,11 +5,11 @@ import { LoggerBrowser } from '@ipg24/b24jssdk'
 async function oauthExample() {
   // Инициализация параметров OAuth
   const oauthParams = {
-    b24Url: 'https://your-domain.bitrix24.ru',
-    clientId: 'your_client_id',
-    accessToken: 'your_access_token',
-    refreshToken: 'your_refresh_token',
-    expiresIn: 3600
+    b24Url: process.env.B24_URL || 'https://your-domain.bitrix24.ru',
+    clientId: process.env.B24_CLIENT_ID || 'your_client_id', 
+    accessToken: process.env.B24_ACCESS_TOKEN || 'your_access_token',
+    refreshToken: process.env.B24_REFRESH_TOKEN || 'your_refresh_token',
+    expiresIn: Number(process.env.B24_EXPIRES_IN || 3600)
   }
 
   try {

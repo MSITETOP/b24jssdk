@@ -40,9 +40,43 @@ export class AuthOAuthManager implements AuthActions {
   }
 
   async refreshAuth(): Promise<AuthData> {
-    // Здесь должна быть логика обновления ток��на через refresh_token
-    // Для примера возвращаем текущие данные
-    return this.getAuthData() as AuthData
+    if (!this.#authData) {
+      throw new Error('AuthData не инициализирован')
+    }
+
+    const params = new URLSearchParams({
+      'grant_type': 'refresh_token',
+      'client_id': this.#b24OAuthParams.clientId,
+      'refresh_token': this.#authData.refresh_token,
+    })
+
+    try {
+      const response = await fetch(`${this.#b24OAuthParams.b24Url}/oauth/token/?${params}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error(`Ошибка обновления токена: ${response.statusText}`)
+      }
+
+      const data = await response.json()
+      
+      // Обновляем данные авторизации
+      this.#authData = {
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+        expires_in: data.expires_in,
+        domain: this.#authData.domain,
+        member_id: this.#authData.member_id,
+      }
+
+      return this.#authData
+    } catch (error) {
+      throw new Error(`Ошибка при обновлении токена: ${error instanceof Error ? error.message : 'Неизвестная ошибка'}`)
+    }
   }
 
   getUniq(prefix: string): string {
