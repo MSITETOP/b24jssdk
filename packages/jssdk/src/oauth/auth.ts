@@ -90,7 +90,11 @@ export class AuthOAuthManager implements AuthActions {
 
       // Вызываем колбэк-функцию, если она установлена
       if (this.#refreshCallback) {
-        await Promise.resolve(this.#refreshCallback(this.#authData))
+        try {
+          await this.#refreshCallback(this.#authData)
+        } catch (error) {
+          console.error('Ошибка в refreshCallback:', error)
+        }
       }
 
       return this.#authData
